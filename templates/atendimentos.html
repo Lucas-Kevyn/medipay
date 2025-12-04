@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📋 Atendimentos Registrados</h2>
+
+<a href="{{ url_for('novo_atendimento') }}" class="btn btn-primary mb-3">
+    <i class="bi bi-plus-lg me-1"></i> Novo Atendimento
+</a>
+
+{% if atendimentos %}
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Médico</th>
+                <th class="text-end">Valor</th>
+                <th class="text-end">Repasse</th>
+                <th class="text-end">Lucro</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for a in atendimentos %}
+            <tr>
+                <td><span class="badge bg-secondary">{{ a.id }}</span></td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 28px; height: 28px; font-size: 0.8rem;">
+                            {{ a.medico.nome|first|upper }}
+                        </div>
+                        <span>{{ a.medico.nome }}</span>
+                    </div>
+                </td>
+                <td class="text-end fw-bold">R$ {{ "%.2f"|format(a.valor)|replace('.', ',') }}</td>
+                <td class="text-end text-success fw-medium">R$ {{ "%.2f"|format(a.calcular_repasse())|replace('.', ',') }}</td>
+                <td class="text-end text-primary fw-medium">R$ {{ "%.2f"|format(a.valor - a.calcular_repasse())|replace('.', ',') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    <i class="bi bi-journal-check me-2"></i>
+    Nenhum atendimento registrado ainda. 
+    <a href="{{ url_for('novo_atendimento') }}">Registre o primeiro!</a>
+</div>
+{% endif %}
+
+{% endblock %}

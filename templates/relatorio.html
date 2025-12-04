@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📊 Relatório Financeiro</h2>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card text-bg-primary">
+            <div class="card-body text-center">
+                <h5 class="card-title">Faturamento Total</h5>
+                <h2 class="mb-0">{{ faturamento_total_fmt }}</h2>
+                <p class="mb-0">{{ qtd_atendimentos }} atendimentos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-bg-warning">
+            <div class="card-body text-center">
+                <h5 class="card-title">Total de Repasses</h5>
+                <h2 class="mb-0">{{ total_repasse_fmt }}</h2>
+                <p class="mb-0">{{ qtd_medicos }} médicos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-bg-success">
+            <div class="card-body text-center">
+                <h5 class="card-title">Lucro Líquido</h5>
+                <h2 class="mb-0">{{ lucro_liquido_fmt }}</h2>
+                <p class="mb-0">{{ "%.2f%%"|format((lucro_liquido / faturamento_total * 100) if faturamento_total > 0 else 0) }} da receita</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('listar_atendimentos') }}" class="btn btn-outline-primary">Ver detalhes dos atendimentos</a>
+    <a href="{{ url_for('listar_medicos') }}" class="btn btn-outline-secondary">Ver médicos</a>
+</div>
+{% endblock %}

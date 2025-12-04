@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4">🏥 Bem-vindo ao MediPay</h1>
+    <p class="lead text-muted">Sistema de gestão financeira para clínicas médicas</p>
+    
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-3">
+            <div class="card border-primary h-100">
+                <div class="card-body text-center">
+                    <h3 class="display-5 text-primary">{{ medicos_count }}</h3>
+                    <h5>Médicos</h5>
+                    <a href="{{ url_for('listar_medicos') }}" class="btn btn-sm btn-outline-primary mt-2">Gerenciar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-success h-100">
+                <div class="card-body text-center">
+                    <h3 class="display-5 text-success">{{ atendimentos_count }}</h3>
+                    <h5>Atendimentos</h5>
+                    <a href="{{ url_for('listar_atendimentos') }}" class="btn btn-sm btn-outline-success mt-2">Registrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-info h-100">
+                <div class="card-body text-center">
+                    <h3 class="display-5">📊</h3>
+                    <h5>Relatório</h5>
+                    <a href="{{ url_for('relatorio') }}" class="btn btn-sm btn-outline-info mt-2">Visualizar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <img src="https://cdn-icons-png.flaticon.com/512/3003/3003883.png" alt="Sistema Médico" width="120" class="opacity-50">
+    </div>
+</div>
+{% endblock %}

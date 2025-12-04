@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🩺 Médicos Cadastrados</h2>
+
+
+<form method="GET" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="busca" class="form-control" 
+               placeholder="Buscar por nome do médico..." 
+               value="{{ request.args.get('busca', '') }}">
+        <button class="btn btn-outline-primary" type="submit">🔍 Buscar</button>
+    </div>
+</form>
+
+<a href="{{ url_for('novo_medico') }}" class="btn btn-success mb-3">➕ Novo Médico</a>
+
+
+{% if medicos %}
+<div class="row g-4">
+{% for m in medicos %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card h-100">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-person me-2"></i> {{ m.nome }}</span>
+        <span class="badge bg-{{ 'success' if m.percentual_repasse < 25 else 'warning' if m.percentual_repasse < 35 else 'danger' }}">
+          {{ m.percentual_repasse }}%
+        </span>
+      </div>
+      <div class="card-body d-flex flex-column">
+        <p class="text-muted small mb-3">
+          <i class="bi bi-tag me-1"></i> ID: <code>{{ m.id }}</code>
+        </p>
+        <div class="mt-auto">
+          <div class="d-grid gap-2 d-md-flex">
+            <a href="{{ url_for('editar_medico', id=m.id) }}" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-pencil-square me-1"></i> Editar
+            </a>
+            <button class="btn btn-outline-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalExcluir{{ m.id }}">
+                <i class="bi bi-trash me-1"></i> Excluir
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+
+
+{% for m in medicos %}
+<div class="modal fade" id="modalExcluir{{ m.id }}" tabindex="-1" aria-labelledby="modalExcluirLabel{{ m.id }}" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalExcluirLabel{{ m.id }}">⚠️ Confirmar Exclusão</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja excluir o médico <strong>{{ m.nome }}</strong>?</p>
+        <p class="text-muted small">Esta ação não pode ser desfeita. Todos os atendimentos associados permanecerão, mas sem vínculo com este médico.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <a href="{{ url_for('excluir_medico', id=m.id) }}" class="btn btn-danger">Excluir mesmo assim</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% else %}
+<div class="alert alert-info">
+    {% if request.args.get('busca') %}
+        Nenhum médico encontrado para "<strong>{{ request.args.get('busca') }}</strong>".
+        <a href="{{ url_for('listar_medicos') }}">Limpar busca</a>
+    {% else %}
+        Nenhum médico cadastrado ainda. <a href="{{ url_for('novo_medico') }}">Cadastre o primeiro!</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

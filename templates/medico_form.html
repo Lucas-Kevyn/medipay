@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{% if medico %}✏️ Editar Médico{% else %}➕ Novo Médico{% endif %}</h2>
+
+<form method="POST">
+    <div class="mb-3">
+        <label for="nome" class="form-label">Nome completo</label>
+        <input type="text" class="form-control" id="nome" name="nome" 
+               value="{{ medico.nome if medico else '' }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="percentual" class="form-label">Percentual de repasse (%)</label>
+        <input type="number" class="form-control" id="percentual" name="percentual" 
+               value="{{ medico.percentual_repasse if medico else '' }}" step="0.01" min="0" required>
+        <div class="form-text">Ex: 30 para 30%</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">{% if medico %}Atualizar{% else %}Cadastrar{% endif %}</button>
+    <a href="{{ url_for('listar_medicos') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
